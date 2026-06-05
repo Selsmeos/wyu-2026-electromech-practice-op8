@@ -3,29 +3,17 @@
 # ===========================
 
 # TIA Portal 临时文件
-*.tmp
-*.tmp.*
-~$*
-*.lck
-*.lock
+
 
 # 编译输出
-*.ap21
-*.ap21_*
 
 # 项目备份
-*.zap17
-*.zap17_*
 
 # STEP 7 临时
-*.bmk
-*.idx
-*.DMP
-*.dmp
+
 
 # PLCSIM 仿真文件
-*.plf
-*.sim
+
 
 # 系统文件
 Thumbs.db
@@ -33,11 +21,7 @@ Thumbs.db
 desktop.ini
 
 # IDE / 编辑器
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
+
 
 # 大文件
-*.mp4
+
