@@ -1,0 +1,7 @@
+<?xml version="1.0" standalone="no"?>
+<?xml-stylesheet type='text/xsl' href='MassDataHandlerLogFile.xsl'?>
+<LogFile titleName="op8_tia_v21_tags_1.xml" projectName="C:\Users\prave\Documents\机电系统综合实践课程\op8_tia_v21_tags.xlsx" typeText="类型" messageText="消息" timeText="时间">
+  <LogEntry type="Error" dateTime="22:22:58">
+    <Message>表单“TagTable Properties”中找不到表单“PLC Tags”中输入的 PLC 变量表“OP8装摄像头螺丝工序”。</Message>
+  </LogEntry>
+</LogFile>

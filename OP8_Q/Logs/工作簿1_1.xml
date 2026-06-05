@@ -1,0 +1,10 @@
+<?xml version="1.0" standalone="no"?>
+<?xml-stylesheet type='text/xsl' href='MassDataHandlerLogFile.xsl'?>
+<LogFile titleName="工作簿1_1.xml" projectName="C:\Users\prave\Documents\工作簿1.xlsx" typeText="类型" messageText="消息" timeText="时间">
+  <LogEntry type="Warning" dateTime="16:06:47">
+    <Message>版本ID在XLSX 文档中丢失。它被假定为最后一个版本。</Message>
+  </LogEntry>
+  <LogEntry type="Warning" dateTime="16:06:48">
+    <Message>Excel 文档不包含 "PLC Tags" 表单。</Message>
+  </LogEntry>
+</LogFile>

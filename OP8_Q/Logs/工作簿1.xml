@@ -1,0 +1,7 @@
+<?xml version="1.0" standalone="no"?>
+<?xml-stylesheet type='text/xsl' href='MassDataHandlerLogFile.xsl'?>
+<LogFile titleName="工作簿1.xml" projectName="C:\Users\prave\Documents\工作簿1.xlsx" typeText="类型" messageText="消息" timeText="时间">
+  <LogEntry type="Error" dateTime="16:06:33">
+    <Message>装载文件 C:\Users\prave\Documents\工作簿1.xlsx 时出错，该文件可能正在使用或为只读文件。</Message>
+  </LogEntry>
+</LogFile>

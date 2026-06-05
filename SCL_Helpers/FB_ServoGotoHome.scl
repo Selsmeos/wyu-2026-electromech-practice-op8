@@ -1,0 +1,73 @@
+FUNCTION_BLOCK "FB_ServoGotoHome"
+TITLE = '伺服回原点'
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.6
+
+VAR_INPUT
+    Axis        : Int;
+    bExecute    : Bool;
+END_VAR
+
+VAR_OUTPUT
+    bDone       : Bool;
+    bError      : Bool;
+END_VAR
+
+VAR
+    eState      : Int := 0;
+    bPulseOn    : Bool := FALSE;
+    tonTimeout  : TON;
+    bTimeout    : Bool := FALSE;
+    bLastExec   : Bool := FALSE;
+    T_TIMEOUT   : TIME := T#15S;
+END_VAR
+
+BEGIN
+    CASE eState OF
+        0:
+            bDone := FALSE;
+            bError := FALSE;
+            bPulseOn := FALSE;
+            IF bExecute AND NOT bLastExec THEN
+                CASE Axis OF
+                    1: IF %I0.2 THEN eState := 40; ELSE eState := 10; END_IF;
+                    2: IF %I0.5 THEN eState := 40; ELSE eState := 10; END_IF;
+                    3: IF %I1.0 THEN eState := 40; ELSE eState := 10; END_IF;
+                END_CASE;
+            END_IF;
+        10:
+            bPulseOn := TRUE;
+            CASE Axis OF
+                1: %Q0.0 := TRUE; %Q0.4 := FALSE;
+                2: %Q0.1 := TRUE; %Q0.5 := FALSE;
+                3: %Q0.2 := TRUE; %Q0.6 := FALSE;
+            END_CASE;
+            tonTimeout(IN := TRUE, PT := T_TIMEOUT);
+            eState := 20;
+        20:
+            tonTimeout(IN := TRUE, PT := T_TIMEOUT);
+            bTimeout := tonTimeout.Q;
+            CASE Axis OF
+                1: IF %I0.2 THEN eState := 40; END_IF;
+                2: IF %I0.5 THEN eState := 40; END_IF;
+                3: IF %I1.0 THEN eState := 40; END_IF;
+            END_CASE;
+            IF bTimeout THEN
+                bError := TRUE;
+                eState := 0;
+            END_IF;
+        40:
+            CASE Axis OF
+                1: %Q0.0 := FALSE;
+                2: %Q0.1 := FALSE;
+                3: %Q0.2 := FALSE;
+            END_CASE;
+            bPulseOn := FALSE;
+            bDone := TRUE;
+            IF NOT bExecute THEN
+                bDone := FALSE;
+                eState := 0;
+            END_IF;
+    END_CASE;
+    bLastExec := bExecute;
+END_FUNCTION_BLOCK

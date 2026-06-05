@@ -1,0 +1,5 @@
+PlcName: PLC_1
+PlcType: S7_1500
+LicenseType: Standard
+PoweredOn: True
+...

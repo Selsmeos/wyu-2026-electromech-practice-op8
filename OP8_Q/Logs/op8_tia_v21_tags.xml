@@ -1,0 +1,7 @@
+<?xml version="1.0" standalone="no"?>
+<?xml-stylesheet type='text/xsl' href='MassDataHandlerLogFile.xsl'?>
+<LogFile titleName="op8_tia_v21_tags.xml" projectName="C:\Users\prave\Documents\机电系统综合实践课程\op8_tia_v21_tags.xlsx" typeText="类型" messageText="消息" timeText="时间">
+  <LogEntry type="Warning" dateTime="22:19:46">
+    <Message>Excel 文档不包含 "PLC Tags" 表单。</Message>
+  </LogEntry>
+</LogFile>

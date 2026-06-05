@@ -1,0 +1,81 @@
+FUNCTION_BLOCK "FB_ServoGotoPos"
+TITLE = '伺服绝对定位'
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.7
+
+VAR_INPUT
+    Axis        : Int;
+    TargetPos   : Real;
+    Velocity    : Real := 30.0;
+    bExecute    : Bool;
+END_VAR
+
+VAR_OUTPUT
+    bDone       : Bool;
+    bBusy       : Bool;
+    bError      : Bool;
+END_VAR
+
+VAR
+    eState      : Int := 0;
+    bPulseOn    : Bool := FALSE;
+    bDirOn      : Bool := FALSE;
+    tonTimeout  : TON;
+    bTimeout    : Bool := FALSE;
+    bLastExec   : Bool := FALSE;
+    T_TIMEOUT   : TIME := T#10S;
+END_VAR
+
+BEGIN
+    CASE eState OF
+        0:
+            bDone := FALSE;
+            bError := FALSE;
+            bBusy := FALSE;
+            bPulseOn := FALSE;
+            bDirOn := FALSE;
+            IF bExecute AND NOT bLastExec THEN
+                IF TargetPos > 0.0 THEN
+                    bDirOn := TRUE;
+                ELSE
+                    bDirOn := FALSE;
+                END_IF;
+                bPulseOn := TRUE;
+                tonTimeout(IN := TRUE, PT := T_TIMEOUT);
+                eState := 20;
+            END_IF;
+        20:
+            tonTimeout(IN := TRUE, PT := T_TIMEOUT);
+            bTimeout := tonTimeout.Q;
+            CASE Axis OF
+                1:
+                    IF %I1.4 THEN bPulseOn := FALSE; eState := 40; END_IF;
+                    IF %I1.5 THEN bError := TRUE; bPulseOn := FALSE; eState := 0; END_IF;
+                2:
+                    IF %I1.7 THEN bPulseOn := FALSE; eState := 40; END_IF;
+                    IF %I2.0 THEN bError := TRUE; bPulseOn := FALSE; eState := 0; END_IF;
+                3:
+                    IF %I2.2 THEN bPulseOn := FALSE; eState := 40; END_IF;
+                    IF %I2.3 THEN bError := TRUE; bPulseOn := FALSE; eState := 0; END_IF;
+            END_CASE;
+            IF bTimeout THEN
+                bError := TRUE;
+                bPulseOn := FALSE;
+                eState := 0;
+            END_IF;
+        40:
+            bPulseOn := FALSE;
+            bDone := TRUE;
+            bBusy := FALSE;
+            IF NOT bExecute THEN
+                bDone := FALSE;
+                eState := 0;
+            END_IF;
+    END_CASE;
+    CASE Axis OF
+        1: %Q0.0 := bPulseOn; %Q0.4 := bDirOn;
+        2: %Q0.1 := bPulseOn; %Q0.5 := bDirOn;
+        3: %Q0.2 := bPulseOn; %Q0.6 := bDirOn;
+    END_CASE;
+    bLastExec := bExecute;
+END_FUNCTION_BLOCK
